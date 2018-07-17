@@ -2,6 +2,8 @@
 
 // 
 var mongoose = require('mongoose');
+var db = mongoose.connect('mongodb://localhost/gomoku');
+
 var Schema = mongoose.Schema;
 var models = require("./models");
 
@@ -18,3 +20,4 @@ module.exports = {
 var _getModel = function (type) {
     return mongoose.model(type);
 };
+

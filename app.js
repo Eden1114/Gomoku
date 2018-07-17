@@ -11,7 +11,7 @@ var session = require('express-session');
 //database
 var mongoose = require('mongoose');
 global.dbHandel = require('./database/dbHandel');
-global.db = mongoose.connect("mongodb://localhost:27017/nodedb");
+global.db = mongoose.connect("mongodb://localhost:27017/gomoku");
 
 
 //upload
