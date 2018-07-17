@@ -10,8 +10,8 @@ var session = require('express-session');
 
 //database
 var mongoose = require('mongoose');
-global.dbHandel = require('./database/dbHandel');
-global.db = mongoose.connect("mongodb://localhost:27017/gomoku");
+global.dbHandle = require('./database/dbHandle');
+global.db = mongoose.connect("mongodb://localhost:27017/gomoku", { useNewUrlParser: true });
 
 
 //upload
@@ -26,6 +26,7 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 var cpUpload = upload.any();
+
 
 var indexRouter = require('./routes/index');// main router
 var usersRouter = require('./routes/users');// user router

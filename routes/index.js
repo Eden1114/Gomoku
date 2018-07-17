@@ -3,7 +3,11 @@ var router = express.Router();
 
 /* GET index page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: '首页' });
+});
+
+router.get('/index', function (req, res, next) {
+  res.render('index', { title: '首页' });
 });
 
 
@@ -13,14 +17,14 @@ router.route('/login').get(function (req, res) {
   // GET方法
   res.render('login', { title: 'User Login', message: '11'});
 }).post(function (req, res) {
-  // POST方法
+  // POST方法，处理登录请求
   
-  //这里的User就是从model中获取user对象，通过global.dbHandel全局方法（这个方法在app.js中已经实现)
+  var uname = req.body.uname;
+  var upwd = req.body.upwd;
+
+  //这里User是从model中获取user对象，通过global.dbHandel全局方法（这个方法在app.js中已经实现)
   var User = global.dbHandel.getModel('user');
   
-  //获取post上来的 data数据中 uname的值
-  var uname = req.body.uname;
-
   //通过此model以用户名的条件 查询数据库中的匹配信息
   User.findOne({name: uname}, function (err, doc) {
     if (err) {
@@ -33,8 +37,7 @@ router.route('/login').get(function (req, res) {
       res.send(404); // 状态码返回404
       // res.redirect('/login');
     } else {
-
-      if (req.body.upwd != doc.password) { 
+      if (upwd != doc.password) { 
         //查询到匹配用户名的信息，但相应的password属性不匹配
         req.session.error = '密码错误';
         res.send(404);

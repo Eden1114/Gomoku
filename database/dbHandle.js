@@ -1,13 +1,12 @@
 'use strict'
 
-// 
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost/gomoku');
-
 var Schema = mongoose.Schema;
 var models = require("./models");
 
 for (var m in models) {
+    console.log('-----' , m, '----');
+    console.log( typeof(m));
     mongoose.model(m, new Schema(models[m]));
 }
 
