@@ -44,6 +44,32 @@ app.set('view engine', 'html');
 
 
 //add middleware
+//session
+app.use(session({
+  secret: 'secret',
+  cookie: ('name', 'value', {
+    path: '/',
+    httpOnly: false,
+    secure: false,
+    maxAge: 1000 * 60 * 30,
+  }),
+  resave: false,
+  saveUninitialized: false,
+}));
+
+app.use(function (req, res, next) {
+  res.locals.user = req.session.user;   // 从session 获取 user对象
+  var err = req.session.error;   //获取错误信息
+  delete req.session.error;
+  res.locals.message = "";   // 展示的信息 message
+  if (err) {
+    res.locals.message = '<div class="alert alert-danger" style="margin-bottom:20px;color:red;">' + err + '</div>';
+  }
+  next();  //中间件传递
+});
+
+
+
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -51,6 +77,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cpUpload);
+
 
 // set routers
 app.use('/', indexRouter);
@@ -76,27 +103,6 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
-});
-
-//session
-app.use(session({
-  resave: false,
-  saveUninitialized: true,
-  secret:'aF,.j)wBhq+E9n#aHHZ91Ba!VaoMf',
-  cookie:{
-    maxAge: 1000 * 60 * 30
-  }
-}))
-
-app.use(function (req, res, next) {
-  res.locals.user = req.session.user;   // 从session 获取 user对象
-  var err = req.session.error;   //获取错误信息
-  delete req.session.error;
-  res.locals.message = "";   // 展示的信息 message
-  if (err) {
-    res.locals.message = '<div class="alert alert-danger" style="margin-bottom:20px;color:red;">' + err + '</div>';
-  }
-  next();  //中间件传递
 });
 
 
