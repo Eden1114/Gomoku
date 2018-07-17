@@ -1,0 +1,17 @@
+{
+    "name": "gomoku",
+    "description": "A simple Node.js based web app which used to play gomoku with your friends or computer.",
+    "version": "0.0.1",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "license": "Apache-2.0",
+    "dependencies": {
+        "express": "^4.16.3"
+    },
+    "engines": {
+        "node": ">= 6.9.x",
+        "npm": "> 3.10.x"
+    }
+}
