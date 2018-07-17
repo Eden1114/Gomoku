@@ -14,22 +14,19 @@ router.get('/index', function (req, res, next) {
 
 /* GET login page. */
 router.route('/login').get(function (req, res) {
-  // GET方法
-  res.render('login', { title: 'User Login', message: '11'});
+  res.render('login', { 
+    title: 'User Login',
+     message: ''
+  });
+
 }).post(function (req, res) {
   // POST方法，处理登录请求
   
   var uname = req.body.uname;
   var upwd = req.body.upwd;
   
-  //DEBUG
-  console.log(uname);
-  console.log(upwd);
-
-  //这里User是从model中获取user对象，通过global.dbHandel全局方法（这个方法在app.js中已经实现)
   var User = global.dbHandle.getModel('user');
   
-  //通过此model以用户名的条件 查询数据库中的匹配信息
   User.findOne({name: uname}, function (err, doc) {
     if (err) {
       //错误就返回给原post处（login.html) 状态码为500的错误
@@ -49,9 +46,9 @@ router.route('/login').get(function (req, res) {
       } else {          
         
         //信息匹配成功，则将此对象（匹配到的user) 赋给session.user  并返回成功
-        if(req.session.user) req.session.user = doc;
+        req.session.user = doc;
         res.sendStatus(200);
-        //    res.redirect('/home');
+        // res.redirect('/home');
       }
     }
   });
@@ -75,10 +72,6 @@ router.route('/register').get(function (req, res) {
       req.session.error = '网络异常错误！';
     } else if (doc) {
 
-      //DEBUG
-      console.log('--------not null');
-      console.log(doc);
-      
       // TODO:
       // 返回该用户已存在
       
@@ -88,9 +81,6 @@ router.route('/register').get(function (req, res) {
 
       User.create({ name: uname, password: upwd }, function (err, doc) {
         if (err) {
-
-          // DEBUG
-          console.log('______error2');
 
           console.log(err);
           res.sendStatus(500);
@@ -107,6 +97,8 @@ router.route('/register').get(function (req, res) {
 
 /* GET home page. */
 router.get('/home', function (req, res) {
+  console.log(req.session.user);
+
   if (!req.session.user) {                     //到达/home路径首先判断是否已经登录
     req.session.error = '请先登录'
     res.redirect('/login');                    //未登录则重定向到 /login 路径
