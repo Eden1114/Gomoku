@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>五子棋</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+			font-size: 14px
+		}
+
+		li {
+			list-style: none
+		}
+
+		#main {
+			width: 1000px;
+			margin: 10px auto;
+		}
+
+		/*用户登陆*/
+
+		#login {
+			width: 350px;
+			border: 1px solid #CCC;
+			background: #F7F7F7;
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 1000;
+		}
+
+		#login h1 {
+			padding-left: 10px;
+			line-height: 25px;
+		}
+
+		#login .box {
+			margin: 5px;
+			background: #FFF;
+			padding: 20px
+		}
+
+		#login .in {
+			height: 25px;
+			border: 1px solid #CCC;
+			line-height: 25px;
+			width: 200px
+		}
+
+		#login .go {
+			height: 25px;
+			border: 1px solid #CCC;
+			width: 80px;
+			line-height: 25px
+		}
+
+		/*背景*/
+
+		#dlgBg {
+			width: 100%;
+			height: 100%;
+			background: #000;
+			position: absolute;
+			left: 0;
+			top: 0;
+			z-index: 998;
+			filter: alpha(opacity=50);
+			-moz-opacity: 0.5;
+			-khtml-opacity: 0.5;
+			opacity: 0.5;
+		}
+
+		/*大厅*/
+
+		.room_all {
+			background: #5480AD;
+			display: inline-block
+		}
+
+		.tag {
+			height: 30px;
+		}
+
+		.tag a {
+			float: left;
+			height: 30px;
+			line-height: 30px;
+			text-align: center;
+			width: 110px;
+			background: #F7F7F7
+		}
+
+		.tag a.on {
+			background: #CCC
+		}
+
+		.room_left {
+			width: 720px;
+			float: left;
+		}
+
+		.room_right {
+			width: 280px;
+			float: left
+		}
+
+		.room_list {
+			height: 600px;
+			margin: 5px 0 5px 5px;
+			overflow-y: scroll;
+		}
+
+		.room_item {
+			width: 135px;
+			height: 135px;
+			background: url('../img/room.gif') center center no-repeat;
+			float: left;
+		}
+
+		.room_item_start {
+			background: url('../img/room_start.gif') center center no-repeat
+		}
+
+		.room_item .player2 {
+			height: 25px;
+			line-height: 25px;
+			text-align: right;
+			margin-top: 20px
+		}
+
+		.room_item .players {
+			height: 50px
+		}
+
+		.room_item .players .icon1 {
+			width: 40px;
+			height: 50px;
+			float: left;
+			cursor: pointer
+		}
+
+		.room_item .players .icon2 {
+			width: 40px;
+			height: 50px;
+			float: left;
+			margin-left: 55px;
+			cursor: pointer
+		}
+
+		.room_item .players .no {
+			background: url('../img/player_no.gif') center center no-repeat
+		}
+
+		.room_item .players .yes {
+			background: url('player_yes.gif') center center no-repeat
+		}
+
+		.room_item .player1 {
+			height: 25px;
+			line-height: 25px;
+			text-align: left
+		}
+
+		.room_item .roomnum {
+			text-align: center
+		}
+
+		/*房间界面*/
+
+		.room {
+			background: #5480AD;
+			display: inline-block
+		}
+
+		.room_user {
+			margin: 5px;
+			width: 190px;
+			height: 535px;
+			float: left;
+			background: #DCC09C;
+			text-align: center
+		}
+
+		.room_user p {
+			line-height: 22px
+		}
+
+		.room_user .u1 {
+			margin-top: 65px;
+		}
+
+		.room_user .u2 {
+			margin-top: 40px
+		}
+
+		.room_chess {
+			margin-top: 5px;
+			width: 535px;
+			height: 535px;
+			float: left;
+			background: url('bg.jpg');
+			position: relative;
+			cursor: no-drop
+		}
+
+		.room_chess .black {
+			background: url('b.png') center center no-repeat;
+			width: 35px;
+			height: 33px;
+			position: absolute;
+			z-index: 888
+		}
+
+		.room_chess .white {
+			background: url('w.png') center center no-repeat;
+			width: 35px;
+			height: 33px;
+			position: absolute;
+			z-index: 888
+		}
+
+		.room_chess .cur {
+			background: url('cur.png') center center no-repeat;
+			width: 35px;
+			height: 33px;
+			position: absolute;
+			z-index: 999
+		}
+
+		.room_message {
+			margin: 5px;
+			width: 255px;
+			float: left;
+		}
+
+		.room_message .room_button {
+			height: 50px;
+			background: #FFF;
+			text-align: center;
+			line-height: 50px
+		}
+
+		.room_message .room_button .btn {
+			width: 98px;
+			height: 36px;
+			background: url('../btn.gif');
+			border: 0;
+			color: #FFF
+		}
+
+		.room_message .content {
+			background: #FFF;
+			height: 450px;
+			overflow-y: scroll;
+			margin-top: 5px
+		}
+
+		.room_message .content p {
+			padding: 5px
+		}
+
+		.room_message .input {
+			height: 30px;
+			background: #FFF;
+		}
+
+		/*用户列表*/
+
+		.list {
+			height: 300px;
+			overflow-y: scroll;
+			background: #FFF;
+			margin: 5px;
+			overflow-x: hidden
+		}
+
+		.list li {
+			padding: 5px
+		}
+
+		.list li span {
+			float: right;
+		}
+
+		/*消息*/
+
+		.message {
+			height: 295px;
+			background: #FFF;
+			margin: 5px
+		}
+
+		.message .content {
+			height: 265px;
+			overflow-y: scroll
+		}
+
+		.message .content p {
+			padding: 5px
+		}
+
+		.message .input {
+			height: 30px;
+		}
+	</style>
+	<!--这里的要改一下-->
+	<script language="javascript" src="http://127.0.0.1:3000/socket.io/socket.io.js"></script>
+	<script language="javascript" src="../javascripts/jquery.min.js"></script>
+	<script language="javascript" src="../javascripts/five.js"></script>
+	
+	<script language="javascript">
+		$(function () {
+			var MSG_ALL = 0;//发送到所有用户
+			var MSG_TO = 1;//发送指定用户
+			var MSG_ROOM = 2;//向指定桌发送消息
+
+			var STAT_NORMAL = 0;//无状态
+			var STAT_READY = 1;//准备
+			var STAT_START = 2;//游戏中
+
+			var COLOR_BLACK = 1;//黑色
+			var COLOR_WHITE = 2;//白色
+
+			var g_Connected = false;
+			var g_Host = "127.0.0.1";
+			var g_Port = 3000;
+			var g_Info = {
+				"id": 0,
+				"nickname": "",
+				"status": 0,
+				"roomIdx": -1,
+				"posIdx": -1
+			};
+			var app = new FiveChess(g_Host, g_Port);
+			var defaultNickname = "请输入昵称";
+
+			app.on("login", function (data) {//登陆返回
+				if (data.ret == 1) {
+					$("#dlgBg").remove();
+					$("#login").remove();
+					g_Info.id = data.info.id;
+					g_Info.nickname = data.info.nickname;
+					g_Info.status = data.info.status;
+					initRoomList(data.room);
+					initUserList(data.list);
+				} else {
+					alert("登陆失败");
+				}
+			}).on("close", function (data) {//退出程序
+				$("#user-" + data.id).remove();
+
+				//本房间有人退出
+				if (data.roomIdx == g_Info.roomIdx) {
+					removeRoom(data.posIdx);
+					if (g_Info.status == STAT_START) {
+						g_Info.status = STAT_NORMAL;
+						updateRoom(g_Info.posIdx, g_Info);
+					}
+				}
+
+				//大厅有人退出
+				if (data.roomIdx != -1) {
+					var name = $('#room-' + data.roomIdx + '-name-' + data.posIdx);
+					var icon = $('#room-' + data.roomIdx + '-icon-' + data.posIdx);
+					name.html('');
+					icon.removeClass('yes').addClass('no');
+				}
+			}).on("join", function (data) {//新用户加入大厅
+				if (g_Info.id != data.id) {
+					$("#list-box").append(makeHtmlUserList(data));
+				}
+			}).on("joinRoom", function (data) {//用户加入房间
+				var name = $('#room-' + data.roomIdx + '-name-' + data.posIdx);
+				var icon = $('#room-' + data.roomIdx + '-icon-' + data.posIdx);
+				name.html(data.nickname);
+				icon.removeClass('no').addClass('yes');
+
+				//自己
+				if (data.id == g_Info.id) {
+					g_Info.roomIdx = data.roomIdx;
+					g_Info.posIdx = data.posIdx;
+					g_Info.status = STAT_NORMAL;
+				} else if (data.roomIdx == g_Info.roomIdx) {
+					//有人加入本房间
+					data.status = STAT_NORMAL;
+					updateRoom(data.posIdx, data);
+				}
+			}).on("ready", function (data) {//准备
+				//本房间有人准备
+				if (data.roomIdx == g_Info.roomIdx) {
+					updateRoom(data.posIdx, data);
+				}
+				//大厅有人准备
+				var stat = (data.status == STAT_NORMAL ?
+					"无状态" : (data.status == STAT_READY ? "已准备" : "游戏中"));
+				$("#user-" + data.id + " span").html(stat);
+			}).on("roomInfo", function (data) {//获取房间信息
+				initRoom(data[0], data[1]);
+			}).on("start", function (data) {//开始游戏
+				g_Info.status = STAT_START;
+				g_Info.color = data.color;
+				g_Info.allowDraw = data.allowDraw;
+				if (g_Info.allowDraw) {
+					$("div.room_chess").css("cursor", "pointer");
+				} else {
+					$("div.room_chess").css("cursor", "no-drop");
+				}
+				$("div.room_chess div").remove();//清除棋子
+				$("#game_ready").val("游戏中...");
+				alert("开始游戏啦...");
+			}).on("startInfo", function (data) {//有游戏开始了
+				$("#room-" + data.roomIdx).addClass("room_item_start");
+				$("#user-" + data.player1 + " span").html("游戏中");
+				$("#user-" + data.player2 + " span").html("游戏中");
+			}).on("overInfo", function (data) {//游戏结束了
+				$("#room-" + data.roomIdx).removeClass("room_item_start");
+				$("#user-" + data.player1 + " span").html("无状态");
+				$("#user-" + data.player2 + " span").html("无状态");
+				if (data.roomIdx == g_Info.roomIdx) {
+					//更新房间另一个成员的状态
+					var p = (data.player1 == g_Info.id ? 2 : 1);
+					$("#room-p" + p + "-status").html("未准备");
+				}
+			}).on("leaveRoom", function (data) {//离开房间
+				var name = $('#room-' + data.roomIdx + '-name-' + data.posIdx);
+				var icon = $('#room-' + data.roomIdx + '-icon-' + data.posIdx);
+				name.html('');
+				icon.removeClass('yes').addClass('no');
+				if (data.id == g_Info.id) {//更新自己的信息
+					g_Info.roomIdx = -1;
+					g_Info.posIdx = -1;
+					changeTag("room_list");
+				} else if (data.roomIdx == g_Info.roomIdx) {//本房间有人退出
+					removeRoom(data.posIdx);
+				}
+			}).on("joinRoomError", function (data) {//加入房间失败
+				alert("加入房间失败");
+			}).on("message", function (data) {//接受消息
+				if (data.type == MSG_ALL) {
+					$("#msg-content").append("<p>" + data.nickname + ": " + data.body + "</p>");
+				} else if (data.type == MSG_TO) {
+					$("#msg-content").append("<p style=\"color:#339933\">" + data.nickname + ": " + data.body + "</p>");
+				} else if (data.type == MSG_ROOM) {
+					$("#room-msg-content").append("<p>" + data.nickname + ": " + data.body + "</p>");
+				}
+			}).on("drawChess", function (data) {//落子
+				var left = data.x * 35 + 5;
+				var top = data.y * 35 + 5;
+				var css = (data.color == COLOR_BLACK ? "black" : "white");
+				var html = '<div id="chess-' + data.x + '-' + data.y + '" style="left:' + left + 'px;top:' + top + 'px" class="' + css + '"></div>';
+				$("div.room_chess").append(html);
+				if ($("div.room_chess .cur").length == 0) {
+					$("div.room_chess").append('<div class="cur"></div>');
+				}
+				$("div.room_chess .cur").css({
+					left: left,
+					top: top
+				});
+				if (data.id == g_Info.id) {
+					g_Info.allowDraw = false;
+					$("div.room_chess").css("cursor", "no-drop");
+				} else {
+					g_Info.allowDraw = true;
+					$("div.room_chess").css("cursor", "pointer");
+				}
+			}).on("winer", function (data) {//胜利
+				g_Info.status = STAT_NORMAL;
+				g_Info.allowDraw = false;
+				updateRoom(g_Info.posIdx, g_Info);
+				alert("你真厉害，居然赢了这个家伙，再接再历！");
+			}).on("loser", function (data) {//失败
+				g_Info.status = STAT_NORMAL;
+				g_Info.allowDraw = false;
+				updateRoom(g_Info.posIdx, g_Info);
+				alert("你太菜了，连这家伙都搞不定，回去养猪吧！");
+			});
+
+			//初始化登陆框
+			$("#dlgBg").css({
+				width: $(document).width(),
+				height: $(document).height()
+			});
+			$("#login").css({
+				left: ($(document).width() - $("#login").width()) / 2,
+				top: 100
+			});
+
+			//昵称输入框事件
+			$('#nickname').click(function () {
+				$(this).val('');
+			}).blur(function () {
+				if ($(this).val() == '') {
+					$(this).val(defaultNickname);
+				}
+			}).val(defaultNickname);
+
+			//登陆
+			$("#loginBtn").click(function () {
+				//链接服务器
+				if (app.connect() == false) {
+					alert("error: " + app.getError());
+					return false;
+				}
+
+				//登陆
+				var nickname = $("#nickname").val();
+				if (!nickname || nickname == defaultNickname) {
+					alert("请输入昵称");
+					$("#nickname").val('').focus();
+					return;
+				}
+				app.login(nickname);
+			});
+
+			//加入房间
+			$("#room-box .player").live("click", function () {
+				var roomIdx = $(this).closest('.room_item').attr('value');
+				var posIdx = $(this).attr('value');
+				if ($("#room-" + roomIdx + "-icon-" + posIdx).hasClass("yes")) {
+					return;
+				}
+
+				if (g_Info.status == STAT_START) {
+					alert("你正在游戏中，不能加入其它房间");
+					return;
+				}
+
+				app.joinRoom(roomIdx, posIdx);
+			});
+
+			//发送消息
+			$("#msg-button").click(function () {
+				var msg = $("#msg-input").val();
+				if (msg == "") {
+					return;
+				}
+				app.sendAllMsg(msg);
+				$("#msg-input").val('');
+			});
+
+			//发送消息到房间内
+			$("#room-msg-button").click(function () {
+				var msg = $("#room-msg-input").val();
+				if (!msg) {
+					return;
+				}
+				app.sendRoomMsg(msg);
+				$("#room-msg-input").val("");
+			});
+
+			//切换窗口
+			$("#tag a").click(function () {
+				var id = $(this).attr('href').substr(1);
+				if ($(this).hasClass('on')) {
+					return false;
+				}
+
+				if (g_Info.roomIdx == -1) {
+					alert("您还没有加入房间");
+					return false;
+				}
+
+				changeTag(id);
+				return false;
+			});
+
+			//落子
+			$("div.room_chess").click(function (ev) {
+				var pageX = ev.pageX;
+				var pageY = ev.pageY;
+				var x = parseInt((pageX - $(this).offset().left - 5) / 35);
+				var y = parseInt((pageY - $(this).offset().top - 5) / 35);
+
+				if (g_Info.roomIdx == -1 || g_Info.status != STAT_START ||
+					$("#chess-" + x + '-' + y).length > 0 || g_Info.allowDraw == false) {
+					return;
+				}
+
+				app.drawChess(g_Info.color, x, y);
+			});
+
+			//准备
+			$("#game_ready").click(function () {
+				if (g_Info.status == STAT_START) {
+					return;
+				}
+				app.ready();
+			});
+
+			//退出房间
+			$("#game_leave").click(function () {
+				if (g_Info.status == STAT_START) {
+					alert("正在游戏中，你不能退出");
+					return;
+				}
+				app.leaveRoom(g_Info.roomIdx);
+			});
+
+			//切换
+			function changeTag(tag) {
+				if (tag == "room_list") {
+					$("#room_list").show();
+					$("#tag_room_list").addClass("on");
+					$("#room").hide();
+					$("#tag_room").removeClass("on");
+				} else {
+					$("#room").show();
+					$("#tag_room").addClass("on");
+					$("#room_list").hide();
+					$("#tag_room_list").removeClass("on");
+				}
+			}
+
+			//生成用户html
+			function makeHtmlUserList(data) {
+				var stat = (data.status == STAT_READY ? "已准备" : (data.status == STAT_START ? "游戏中" : "无状态"));
+				var html = ('<li id="user-' + data.id + '"><span>' + stat + "</span>" + data.nickname + "</li>");
+				return html;
+			}
+
+			//初始化用户列表
+			function initUserList(data) {
+				var html = '';
+				for (var i = 0; i < data.length; i++) {
+					html += makeHtmlUserList(data[i]);
+				}
+				$("#list-box").html(html);
+			}
+
+			//初始化房间列表
+			function initRoomList(data) {
+				var html = '';
+				for (var idx in data) {
+					html += '<div id="room-' + idx + '" value="' + idx + '" class="room_item">';
+					html += '<div id="room-' + idx + '-name-1" class="player2">' + (data[idx][1] ? data[idx][1].nickname : "") + '</div>';
+					html += '<div class="players">';
+					html += '<div value="0" id="room-' + idx + '-icon-0" class="player icon1 ' + (data[idx][0] ? "yes" : "no") + '"></div>';
+					html += '<div value="1" id="room-' + idx + '-icon-1" class="player icon2 ' + (data[idx][1] ? "yes" : "no") + '"></div>';
+					html += '</div>';
+					html += '<div id="room-' + idx + '-name-0" class="player1">' + (data[idx][0] ? data[idx][0].nickname : "") + '</div>';
+					html += '<div class="roomnum">- ' + (parseInt(idx) + 1) + ' -</div>';
+					html += '</div>';
+				}
+				$("#room-box").html(html);
+			}
+
+			//初始化房间
+			function initRoom(player1, player2) {
+				//清除消息和棋子
+				$("div.room_chess div").remove();
+				$("#room-msg-content p").remove();
+
+				//tag样式切换
+				changeTag("room");
+
+				//玩家1
+				if (player1) {
+					updateRoom(0, player1);
+				} else {
+					removeRoom(0);
+				}
+
+				//玩家2
+				if (player2) {
+					updateRoom(1, player2);
+				} else {
+					removeRoom(1);
+				}
+			}
+
+			//更新房间人员
+			function updateRoom(posIdx, player) {
+				var p = (posIdx == 0 ? 1 : 2);
+				var s = (player.status == STAT_NORMAL ? "未准备" : (player.status == STAT_READY ? "已准备" : "游戏中"));
+				$("#room-p" + p + "-nickname").html(player.nickname);
+				$("#room-p" + p + "-status").html(s);
+				$("#room-p" + p + "-img").html('<img src="../img/yes_player.gif">');
+				if (g_Info.id == player.id) {
+					var b = (player.status == STAT_NORMAL ? "准备" : (player.status == STAT_READY ? "取消" : "游戏中..."));
+					$("#game_ready").val(b);
+				}
+			}
+
+			//从本房间移除另一个成员
+			function removeRoom(posIdx) {
+				var p = (posIdx == 0 ? 1 : 2);
+				$("#room-p" + p + "-nickname").html('&nbsp;');
+				$("#room-p" + p + "-status").html("&nbsp;");
+				$("#room-p" + p + "-img").html('<img src="../img/no_player.gif">');
+			}
+		});
+	</script>
+</head>
+
+<body>
+	<div id="dlgBg"></div>
+	<div id="login">
+		<h1>登陆</h1>
+		<div class="box">
+			<input type="text" id="nickname" maxlength="10" class="in">
+			<input type="button" id="loginBtn" class="go" value="加入游戏">
+		</div>
+	</div>
+	<div id="main">
+		<div id="tag" class="tag">
+			<a id="tag_room_list" href="#room_list" class="on">大厅</a>
+			<a id="tag_room" href="#room">房间</a>
+		</div>
+		<div style="display:none" id="room" class="room">
+			<div class="room_user">
+				<div class="u1">
+					<p id="room-p1-img">
+						<img src="../img/no_player.gif">
+					</p>
+					<p id="room-p1-nickname"></p>
+					<p id="room-p1-status"></p>
+				</div>
+				<div class="u2">
+					<p id="room-p2-nickname"></p>
+					<p id="room-p2-status"></p>
+					<p id="room-p2-img">
+						<img src="../img/no_player.gif">
+					</p>
+				</div>
+			</div>
+			<div class="room_chess">
+			</div>
+			<div class="room_message">
+				<div class="room_button">
+					<input type="button" id="game_ready" class="btn" value="准备">
+					<input type="button" id="game_leave" class="btn" value="退出">
+				</div>
+				<div id="room-msg-content" class="content"></div>
+				<div class="input">
+					<input id="room-msg-input" style="width:175px;margin:5px 0 0 8px" type="text" id="input">
+					<input id="room-msg-button" style="width:50px;margin:5px 0 0 0" type="button" value="发送">
+				</div>
+			</div>
+		</div>
+		<div id="room_list" class="room_all">
+			<div class="room_left">
+				<div id="room-box" class="room_list"></div>
+			</div>
+			<div class="room_right">
+				<div id="list-box" class="list"></div>
+				<div class="message">
+					<div id="msg-content" class="content"></div>
+					<div class="input">
+						<select style="width:50px;margin:5px 0 0 8px">
+							<option value="">所有人</option>
+						</select>
+						<input id="msg-input" style="width:125px;margin:5px 0 0 0" type="text" id="input">
+						<input id="msg-button" style="width:50px;margin:5px 0 0 0" type="button" value="发送">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
