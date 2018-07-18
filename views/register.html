@@ -5,68 +5,68 @@
     <script type="text/javascript" src="javascripts/jquery.min.js"></script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <link rel="stylesheet" href="css/bootstrap.min.css" media="screen">
-    <style type="text/css">
-        .m15 {
-            margin: 15px;
-        }
-
-        .tc {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 600;
-        }
-    </style>
-    
     <script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
 </head>
 
 <body screen_capture_injected="true">
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="/">首页</a>
+            </div>
+    </nav>
+
+
     <div class="container">
         <%- message %>
-            <form class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post" onsubmit="return false">
-                <fieldset>
-                    <legend></legend>
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <p class="tc">注册信息</p>
+            <center>
+                <form class="col-sm-offset-4 col-sm-4 form-horizontal" role="form" method="post" onsubmit="return false">
+                    <fieldset>
+                        <legend></legend>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h2 class="tc">注册信息</h2>
+                            </div>
+                            <div class="panel-body m15">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </span>
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-lock"></span>
+                                        </span>
+                                        <input type="text" class="form-control" id="password" name="password" placeholder="请输入密码" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <span class="glyphicon glyphicon-lock"></span>
+                                        </span>
+                                        <input type="text" class="form-control" id="password1" name="password1" placeholder="请再次输入密码" required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block" id="register1">注册</button>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-info col-sm-2 col-sm-offset-10" id="login1">登录</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="panel-body m15">
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-user"></span>
-                                    </span>
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户名" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-lock"></span>
-                                    </span>
-                                    <input type="text" class="form-control" id="password" name="password" placeholder="请输入密码" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-lock"></span>
-                                    </span>
-                                    <input type="text" class="form-control" id="password1" name="password1" placeholder="请再次输入密码" required>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block" id="register1">注册</button>
-                            </div>
-                            <div class="form-group">
-                                <button type="button" class="btn btn-info col-sm-2 col-sm-offset-10" id="login1">登录</button>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
-            </form>
+                    </fieldset>
+                </form>
+            </center>
     </div>
 
     <script type="text/javascript">

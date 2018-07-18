@@ -14,6 +14,11 @@ router.get('/index', function (req, res, next) {
 
 /* GET login page. */
 router.route('/login').get(function (req, res) {
+  if(req.session.user) {
+    res.redirect('/home');
+  }
+  
+  
   res.render('login', { 
     title: 'User Login',
      message: ''
@@ -58,7 +63,7 @@ router.route('/login').get(function (req, res) {
 /* GET register page. */
 router.route('/register').get(function (req, res) {
   
-  res.render('register', { title: 'User register' , message: '11'});
+  res.render('register', { title: 'User register' , message: ''});
 
 }).post(function (req, res) {
   var uname = req.body.uname;
@@ -72,13 +77,10 @@ router.route('/register').get(function (req, res) {
       req.session.error = '网络异常错误！';
     } else if (doc) {
 
-      // TODO:
-      // 返回该用户已存在
+      req.session.error = '用户名已存在';
       
     } 
     else {
-      // 创建新的用户
-
       User.create({ name: uname, password: upwd }, function (err, doc) {
         if (err) {
 
@@ -97,11 +99,11 @@ router.route('/register').get(function (req, res) {
 
 /* GET home page. */
 router.get('/home', function (req, res) {
-  console.log(req.session.user);
+  // console.log(req.session.user);
 
-  if (!req.session.user) {                     //到达/home路径首先判断是否已经登录
-    req.session.error = '请先登录'
-    res.redirect('/login');                    //未登录则重定向到 /login 路径
+  if (!req.session.user) {
+    req.session.error = '请先登录';
+    res.redirect('/login');
   }
   else {
     res.render('home', { title: 'Home', message: ' ' }); 

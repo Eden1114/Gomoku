@@ -5,10 +5,6 @@ var Schema = mongoose.Schema;
 var models = require("./models");
 
 for (var m in models) {
-    //DEBUG
-    console.log('-----' , m, '----');
-    console.log( typeof(m));
-    
     mongoose.model(m, new Schema(models[m]));
 }
 
