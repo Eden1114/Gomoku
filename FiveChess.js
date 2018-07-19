@@ -1,6 +1,6 @@
 ﻿/**
  * 使用socket.io实现的服务器端
- * 对应的是public/client下的客户端
+ * 对应的是home中的的客户端
  */
 
 FiveChess = function() {
@@ -21,12 +21,12 @@ FiveChess = function() {
 		"MaxClientNum" : 300
 	};
 
-	var m_Connections = [];//用户管理
-	var m_Rooms = [];//房间管理
-	var m_RoomData = [];//房间内棋盘信息
+	var m_Connections = [];	//用户管理
+	var m_Rooms = [];		//房间管理
+	var m_RoomData = [];	//房间内棋盘信息
 	var n_Clients = 0;
 	var self = this;
-	var io;//socket.io
+	var io;					//socket.io
 	
 
 	//导入外部配置信息
@@ -37,7 +37,7 @@ FiveChess = function() {
 	}
 	
 	//初始化棋盘数据
-	//每一个房间的棋盘为RoomData[roomid][i][j]，i,j<= 15
+	//每一个房间的棋盘为RoomData[roomid][i][j] i,j<= 15
 	var InitChessData = function(roomIdx) {
 		m_RoomData[roomIdx] = [];
 		for(var i = 0; i < 15; i++){
@@ -69,6 +69,7 @@ FiveChess = function() {
 		
 		//网络服务
 		io = require('socket.io').listen(server);
+
 		io.sockets.on('connection', function (socket) {
 			//断开
 			socket.on("disconnect", OnClose);
@@ -85,8 +86,44 @@ FiveChess = function() {
 			//落子
 			socket.on("drawChess", OnDrawChess);
 		});
+
 		console.log('server is started on server.');
 	}
+
+	//用户登陆
+	var OnLogin = function (data) {
+		var ret = 0;
+		var sid = this.id;
+		if (n_Clients < m_Config.MaxClientNum) {
+			var client = {
+				socket: this,
+				nickname: data.nickname,
+				status: STAT_NORMAL,//0-无状态, 1-准备, 2-游戏中
+				roomIdx: -1, //所处房间号
+				posIdx: -1 //所处房间的位置
+			};
+
+			//更新客户端链接
+			m_Connections[sid] = client;
+			n_Clients++;
+
+			//登陆成功
+			this.emit("login", {
+				"ret": 1,
+				"info": GetUserInfo(sid),
+				"list": GetUserList(),
+				"room": GetRoomList()
+			});
+
+			//发送用户加入大厅
+			io.sockets.emit("join", GetUserInfo(sid));
+		} else {
+			//登陆失败
+			this.emit("login", { "ret": 0 });
+		}
+	}	
+
+
 	
 	//获取房间列表
 	var GetRoomList = function()
@@ -167,39 +204,6 @@ FiveChess = function() {
 		//删除元素
 		delete m_Connections[sid];
 	}
-	
-	//用户登陆
-	var OnLogin = function(data) {
-		var ret = 0;
-		var sid = this.id;
-		if(n_Clients < m_Config.MaxClientNum){
-			var client = {
-				socket   : this,
-				nickname : data.nickname,
-				status   : STAT_NORMAL,//0-无状态, 1-准备, 2-游戏中
-				roomIdx  : -1, //所处房间号
-				posIdx   : -1 //所处房间的位置
-			};
-			
-			//更新客户端链接
-			m_Connections[sid] = client;
-			n_Clients++;
-			
-			//登陆成功
-			this.emit("login", {
-				"ret"  : 1, 
-				"info" : GetUserInfo(sid),
-				"list" : GetUserList(),
-				"room" : GetRoomList()
-			});
-			
-			//发送用户加入大厅
-			io.sockets.emit("join", GetUserInfo(sid));
-		}else{
-			//登陆失败
-			this.emit("login", {"ret" : 0});
-		}
-	}	
 	
 	//加入房间
 	var OnJoinRoom = function(data){

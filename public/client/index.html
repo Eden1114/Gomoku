@@ -517,6 +517,10 @@
 
 			//加入房间
 			$("#room-box .player").live("click", function () {
+				console.log($(this));
+				console.log($(this).attr('value'));
+				console.log($(this).closest('.room_item').attr('value'));
+
 				var roomIdx = $(this).closest('.room_item').attr('value');
 				var posIdx = $(this).attr('value');
 				if ($("#room-" + roomIdx + "-icon-" + posIdx).hasClass("yes")) {
