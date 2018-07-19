@@ -30,6 +30,7 @@ var cpUpload = upload.any();
 
 var indexRouter = require('./routes/index');// main router
 var usersRouter = require('./routes/users');// user router
+var ajaxRouter = require('./routes/ajax');//ajax router
 
 var app = express();
 
@@ -86,7 +87,9 @@ app.use('/users', usersRouter);
 app.use('/login', indexRouter);
 app.use('/register', indexRouter);
 app.use('/home', indexRouter);
-app.use("/logout", indexRouter);
+app.use('/logout', indexRouter);
+
+app.use('/ajax', ajaxRouter);
 
 
 // catch 404 and forward to error handler

@@ -11,7 +11,6 @@ function client() {
     const STAT_START = 2;   //游戏中
 
     const COLOR_BLACK = 1;  //黑色
-    // const COLOR_WHITE = 2;  //白色
 
 
     //TODO:这里以后要写到.env中
@@ -29,13 +28,9 @@ function client() {
         "posIdx": -1
     };
 
-    var defaultNickname = "请输入昵称";
-
     //登录
     app.on("login", function (data) {
         if (data.ret == 1) {
-            // $("#dlgBg").remove();
-            // $("#login").remove();
             g_Info.id = data.info.id;
             g_Info.nickname = data.info.nickname;
             g_Info.status = data.info.status;
@@ -251,10 +246,6 @@ function client() {
 
     //加入房间
     $("#room-box").on("click", '.player',function () {
-        // console.log('debug');
-        // console.log($(this).attr('value'));
-        // console.log($(this).closest('.room_item').attr('value'));
-
         var roomIdx = $(this).closest('.room_item').attr('value');
         var posIdx =  $(this).attr('value');
         if ($("#room-" + roomIdx + "-icon-" + posIdx).hasClass("yes")) {

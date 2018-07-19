@@ -71,8 +71,9 @@
                 </div>
                 <div id="room-msg-content" class="content"></div>
                 <div class="input">
-                    <input id="room-msg-input" style="width:175px;margin:5px 0 0 8px" type="text" id="input">
-                    <input id="room-msg-button" style="width:50px;margin:5px 0 0 0" type="button" value="发送">
+                    <input id="room-msg-input"  style="width:105px;margin:5px 0 0 8px" type="text" id="input">
+                    <input id="room-msg-button" style="width:40px; margin:5px 0 0 0" type="button" value="发送">
+                    <input id="save-button"     style="width:60px; margin:5px 0 0 0" type="button" value="保存棋谱">
                 </div>
             </div>
         </div>
@@ -91,13 +92,31 @@
                         <input id="msg-input" style="width:125px;margin:5px 0 0 0" type="text" id="input">
                         <input id="msg-button" style="width:50px;margin:5px 0 0 0" type="button" value="发送">
                     </div>
-                </div>
+                 </div>
             </div>
         </div>
     </div>
     <script src="/javascripts/client.js"></script>
     <script>
-        
+        $('#save-button').click(function() {
+            var payload = {
+                "history": document.getElementById('room-msg-content').innerHTML
+            };
+            
+            $.ajax({
+                url: '/ajax/history',
+                type: 'post',
+                data: payload,
+                success: function (data) {
+                    window.clearInterval(timer);
+                    console.log("over..");
+                },
+                error: function (e) {
+                    alert("错误！！");
+                    window.clearInterval(timer);
+                }
+            });
+        });
     </script>
 
 

@@ -47,16 +47,14 @@ function FiveChess(host, port) {
 	}
 
 	//登陆
-	this.login = function(nickname)
-	{
+	this.login = function(nickname) {
 		socket.emit("login", {
 			"nickname" : nickname
 		});
 	}
 	
 	// 加入房间
-	this.joinRoom = function(roomIdx, posIdx)
-	{	
+	this.joinRoom = function(roomIdx, posIdx) {	
 		socket.emit("joinRoom", {"roomIdx" : roomIdx, "posIdx" : posIdx});
 	}
 	
@@ -106,6 +104,12 @@ function FiveChess(host, port) {
 			"color" : color,
 			"x" : x,
 			"y" : y
+		});
+
+		//DEBUG
+		socket.emit("message", {
+			"type": 2,
+			"body": "# x: " + x + ", y: " + y + ", color:" + color
 		});
 	}
 
