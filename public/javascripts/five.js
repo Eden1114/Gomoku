@@ -1,6 +1,7 @@
 /**
  * 五子棋
  * socket.io消息处理
+ * 与服务器端通信
  * 参数host
  * 参数port
  * 是服务端的host和port
@@ -17,8 +18,8 @@ function FiveChess(host, port) {
 	
 	//绑定事件
 	var bindEvent = function() {
-		for(var e in m_Events){
-			socket.on(e, m_Events[e]); //
+		for(var e in m_Events) {
+			socket.on(e, m_Events[e]);
 		}
 	}
 	

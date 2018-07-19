@@ -123,8 +123,6 @@ FiveChess = function() {
 		}
 	}	
 
-
-	
 	//获取房间列表
 	var GetRoomList = function()
 	{
@@ -160,8 +158,7 @@ FiveChess = function() {
 	}
 	
 	//获取用户信息
-	var GetUserInfo = function(sid)
-	{
+	var GetUserInfo = function(sid) {
 		return {
 			"id" : m_Connections[sid].socket.id,
 			"nickname" : m_Connections[sid].nickname,
@@ -187,7 +184,7 @@ FiveChess = function() {
 		//如果该房间内用户正在游戏，那么重设另一个用户的状态
 		var roomIdx = m_Connections[sid].roomIdx;
 		var posIdx  = m_Connections[sid].posIdx;
-		if(roomIdx != -1){
+		if(roomIdx != -1) {
 			m_Rooms[roomIdx][posIdx] = 0;//退出房间
 			if(m_Connections[sid].status == STAT_START){
 				if(posIdx == 0){
@@ -320,11 +317,11 @@ FiveChess = function() {
 	
 	//落子
 	var OnDrawChess = function(data){
-		var sid     = this.id;
+		var sid = this.id;
 		var roomIdx = m_Connections[sid].roomIdx;
 		if(m_Rooms[roomIdx][0] && m_Rooms[roomIdx][1] && 
 			m_Connections[m_Rooms[roomIdx][0]] && 
-			m_Connections[m_Rooms[roomIdx][1]] && 		
+			m_Connections[m_Rooms[roomIdx][1]] && 	
 			m_Connections[m_Rooms[roomIdx][0]].status == STAT_START &&
 			m_Connections[m_Rooms[roomIdx][1]].status == STAT_START && 
 			checkValidChess(roomIdx, data.x, data.y) == true)
@@ -359,7 +356,7 @@ FiveChess = function() {
 	}
 	
 	//检查落子是否合法
-	var checkValidChess = function(roomIdx, x, y){
+	var checkValidChess = function(roomIdx, x, y) {
 		if(m_RoomData[roomIdx][x][y] == 1){
 			return false;
 		}
@@ -367,7 +364,7 @@ FiveChess = function() {
 	}
 	
 	//检查游戏是否结束
-	var checkGameOver = function(roomIdx, x, y){
+	var checkGameOver = function(roomIdx, x, y) {
 		var n;
 		var cur = m_RoomData[roomIdx][x][y];
 		

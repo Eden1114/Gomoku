@@ -1,0 +1,33 @@
+.room_chess {
+    margin-top: 5px;
+            width: 535px;
+            height: 535px;
+            float: left;
+            background: url('../img/bg.jpg');
+            position: relative;
+            cursor: pointer;
+}
+
+.room_chess .black {
+    background: url('../img/b.png') center center no-repeat;
+    width: 35px;
+    height: 33px;
+    position: absolute;
+    z-index: 888
+}
+
+.room_chess .white {
+    background: url('../img/w.png') center center no-repeat;
+    width: 35px;
+    height: 33px;
+    position: absolute;
+    z-index: 888
+}
+
+.room_chess .cur {
+    background: url('../img/cur.png') center center no-repeat;
+    width: 35px;
+    height: 33px;
+    position: absolute;
+    z-index: 999
+}
